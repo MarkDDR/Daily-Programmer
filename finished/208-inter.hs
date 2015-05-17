@@ -30,17 +30,20 @@ genRadial (x,y,r) (l,h) charList =
     in radialRow : genRadial (x,y,r) (l,h-1) charList
 
 
--- Returns where a line intersects a point perpendicular to it
+-- Returns where in a line a point would intersect if a perpendicular line was drawn
+-- This is explained better if you draw a picture of it
 linePointIntersect :: Point -> Line -> DPoint
 linePointIntersect (x,y) (m, b) =
+    -- You can work this formula out yourself if you solve a system of equations for
+    -- a line (m,b) and the perpendicular line that passes through the point (x,y)
     let n = negate . recip $ m
-        c = y - (n * x)
-        dx = (-c + b) / (n - m)
-        dy = (m * dx) + b
-    in  (dx, dy)
+        c = (fromIntegral y) - (n * (fromIntegral x))
+        x2 = (-c + b) / (n - m)
+        y2 = (m * x2) + b
+    in  (x2, y2)
 
-
-
+-- TODO: Finish genLinear
+-- genLinear :: Point -> Point -> [Char] -> 
 
 main = do
     let charList = "aaabcccdeeefggg"
