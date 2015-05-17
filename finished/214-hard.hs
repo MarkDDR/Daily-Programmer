@@ -35,8 +35,10 @@ totalDistanceBrute travelled location pointList =
 pair :: [a] -> [(a,a)]
 pair [] = []
 pair (x:[]) = error "Something terrible has happened with your input" -- This shouldn't ever happen
--- If I were to actual generalize this then this would be `pair (x:[]) = []`
+-- If I were to actually generalize this then this would be `pair (x:[]) = []`
 pair (x:y:xs) = ((x,y): pair xs)
+
+-- Input should be a text file as described in the challenge text
 
 main = do
     args <- getArgs
@@ -44,8 +46,10 @@ main = do
     file <- readFile $ head args
     if null args
         then error $ "USAGE: " ++ progName ++ " pointListFile"
-             -- This then doesn't every happen because the `file <-` before is apparently not lazy
+             -- This then doesn't every happen because the `file <- ...` before is apparently not lazy
+             -- and head args errors. Oh well, won't fix
         else let    pointList = pair . map read . tail . words $ file
+                    -- tail is used to get rid of the number at the beginning of input, as it's not used
                     pointVec = V.fromList pointList
                     totDist = totalDistanceBrute 0 (0.5, 0.5) pointVec
              in     print totDist
